@@ -14,3 +14,9 @@ curl -i -H "Content-Type: application/json"  -d '{"description":"Buy a Car"}' ht
 
 删除某个task:
 curl -i -X DELETE  http://localhost:5000/todo/api/v1.0/tasks/2
+
+提交git遇到问题：
+error: The requested URL returned error: 403 Forbidden while accessing
+解决方法：
+[remote "origin"]
+    url = https://wangz@github.com/wangz/example.git 
