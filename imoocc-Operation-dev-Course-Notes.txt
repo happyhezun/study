@@ -1,0 +1,570 @@
+整体工程的设计
+
+资产扫描发现
+资产信息(硬件信息、sn、mac、系统版本)
+ansible的ad-hoc和playbook实现批量主机的自动化任务
+
+git clone https://github.com/iopsgroup/imoocc
+
+pip install -r ./require.txt
+
+mysql\redis\mongodb
+
+[client]
+default-character-set=utf8
+
+[mysqld]
+character-set-server=utf8
+collation-server=utf8_general_ci
+
+create database imoocc;
+
+grant all on imoocc.* to imoocc@'%' identified by '123456';
+flush privileges;
+
+vim admin/settings/settins.py
+
+/opt/python2.7/python ./manage.py migrations
+/opt/python2.7/python ./manage.py migrate
+
+/opt/python2.7/python ./manage.py runserver 0.0.0.0:9000
+
+多思考、多总结、多尝试。
+Ipython
+自动补全、历史记录、获取对象。
+
+pip install ipython
+
+aa = "ooo"
+? aa
+
+def aa():
+    print "hi aa"
+
+? aa
+?? aa
+
+Number(数字)、String(字符串)、List(列表)、Dictionary(字典)、
+Tuple(元组)、Bool(布尔)
+a = 11 整数
+aa = 13123.213 浮点数
+字符串默认是ascci编码
+
+aa = u'1ds21' unicode编码
+type(aa)
+
+列表类型
+aa = [1, 2, 3, 4, 5, 6]
+列表的切片：
+aa[3]
+添加元素
+aa.apend(6)
+
+元组类型
+aa = (1, 2, 3, 4, 5, 6)
+不可变类型
+元组类似的用途：定义一些不可变的值，存储的速度比列表快。
+
+字典
+mydic = {"a1":11}
+键值对关系，根据键取对应的值。
+mydic['a1']
+mydic.values() 返回字典里所有的值
+mydic.keys() 返回所有的键
+
+值是可变的、存储速度比列表快。
+
+布尔类型
+mydic.has_key("a1") 判断键是否存在。
+逻辑判断比较运算符中返回布尔类型、方便逻辑判断。
+
+变量赋值
+赋值符号 = 
+变量名必须是大小写
+
+基本语句：
+条件判断
+while循环(使用比较少)
+for循环、迭代器
+range(0,10) 返回的是一个列表。
+for i in range(0, 10):
+    print i
+迭代器，迭代对象。
+
+break\continue
+
+for i in range(0, 10):
+    if i == 5:
+	    break
+	print i
+
+for i in range(0, 10):
+    if i == 5:
+	    continue
+	print i
+	
+迭代器
+
+迭代操作(用于for循环遍历的对象)
+
+集合数据类型(列表、元组、字符串、数值)
+迭代器
+迭代器还可以被next()函数调用并不断返回下一个值的对象
+
+aa = [1, 2, 3, 4, 5, 6]
+for i in aa:
+    print i
+
+al = iter(aa)
+? al
+al.next()
+
+迭代器的作用: 读取大的文件，一部分一部分的读取，不会占用系统过多的资源。
+
+生成器
+
+生成器本质上还是一个迭代器
+用关键字yield来返回值(通常是使用return返回值)
+
+def testgen(n):
+    yield n+2
+	
+tg = testgen(5)
+
+tg 生成器对象
+
+tg.next() 调用生成器
+
+列表解析与生成器表达式
+一个非常有用，简单，而且灵活的工具，可以用来动态地创建列表
+
+aa = [1, 2, 3, 4, 5]
+列表解析
+[ item+2 for item in aa ]
+
+生成器表达式
+( item+2 for item in aa )
+nna = ( item+2 for item in aa )
+nna.next() 不断调用
+
+函数式编程
+函数是对程序进行结构化的一种编程手法
+变量、函数体、返回值、传入参数
+函数调用，后台任务的执行。
+
+匿名函数：
+匿名是因为不需要以标准的方式来声明，如使用def语句
+
+a = lambda x, y: x+y
+?a
+a(20, 40)
+
+正则表达式
+
+正则表达式的符号
+import re
+
+re.search 全局对象整个的查找
+
+re.search("abc", "123abcyul")
+re.search("a.c", "123a2cyul")
+
+re.match("[0-9]{3}a.c", "123a2cyul") match 从头开始找
+
+re.match("[0-9]{3}(a.c)", "123a2cyul").groups()
+re.match("[0-9]{3}(a.c)", "123a2cyul").group(0)
+
+为什么要选择Django
+一站式的解决方案(ORM、Session、Admin等)
+成熟的Python WEB框架(Django社区、丰富的模块、稳定)
+官方文档：
+
+Django工程的结构和建立
+
+mydevops 一个容器项目
+scanhosts 应用项目
+
+一个容器项目可以建立多个应用项目
+容器项目没有实质的作用
+
+安装django 1.8.2
+pip install django == 1.8.2
+容器项目
+python-path/django-admin startproject mydevops
+manage.py 管理工具
+url.py 对url的路由
+
+建立应用项目
+./manage.py startapp scanhosts
+
+settings.py
+
+INSTALLED_APPS 中加入scanhosts
+
+配置数据库：
+
+set paste
+
+orm模型、对象关系映射
+操作模型是操作对应的表格
+
+create database mydevops
+grant all on mydevops.* to admin@'%' identified by 'mysqlpass'
+flush privileges
+
+model模型：
+
+CharField 字符串字段
+IntegerField 整数型字段
+DateTimeField 时间日期字段
+ForeignKey 定义多对一关系
+
+模型转化为对应的sql语句建立起数据库对应的表格
+定义模型—> makemigrations(迁移文件)-> migrate(sql) -> 数据库
+
+python_path ./manage.py makemigrations
+python_path ./manage.py migrate
+
+登录数据库验证表
+desc table 查看字段类型
+
+采集接口：
+用户的ip信息
+user -> 采集接口->model->mysql
+user <- 信息接口 <- model <- mysql
+
+view : mvc 里的逻辑控制
+
+接口：
+采集接口
+http://127.0.0.1/sendinfos user_info
+
+views.py
+from django.http import JsonResponse, HttpResponse
+from models import *
+import json
+
+def user_info(request):
+    print request.META
+    ip_addr = request.META['REMOTE_ADDR']
+    user_ua = request.META['HTTP_USER_AGENT']
+    user_obj = UserIPInfo.object.filter(ip = ip_addr)
+
+    if not user_obj:
+        res = UserIPInfo.object.create(ip = ip_addr):
+        ip_add_id = res.id
+    else:
+        ip_add_id = user_obj[0].id
+    BrowseInfo.objects.create(useragent = user_ua, userip_id =  ip_add_id)
+
+    result = {
+        "STATUS": "success",
+        "INFO": "User info",
+        "IP": ip_addr,
+        "UA": user_ua
+    }
+    return  HttpResponse(json.dumps(result), content_type="application/json")
+
+
+命令行调试django项目
+python_path ./manage.py shell
+from scanhosts.models import UserIPInfo
+for item in UserIPInfo.objects.all():
+    print item.__dict__
+
+
+信息接口
+
+http://127.0.0.1/getinfos user_history
+
+url.py 配置
+
+from scanhosts.views import *
+
+url(r'^getinfos/$', user_history),
+url(r'^sendinfos/$', user_info),
+
+views.py 添加信息接口
+
+def user_history(request):
+    ip_list = UserIPInfo.object.all()
+    infos = {}
+    for item ip in  ip_list:
+        infos[item.ip] = [b_obj.useragent for b_obj in BrowseInfo.objects.filter(userip_id = item.id)]
+        #列表解析
+    result = {
+        "STATUS": "success",
+        "INFO": infos,
+    }
+    return HttpResponse(json.dumps(result), content_type="application/json")
+    
+
+验证请求
+http:127.0.0.1:8000/getinfos/
+
+Django日志logging模块
+
+logger ------> handler(真正的日志处理器，写文件还是发送email) ---(formatter(日志格式)|filter(过滤器))---> files, emails 
+日志记录器、处理器、格式器、过滤器
+
+项目添加日志功能
+
+配置settings.py
+定义 LOGGING 配置
+
+程序端views.py的调用
+import logging
+logger = logging.getLogger("django")
+
+logger.info("%s already exists" % ip_addr)
+
+Common Web application tools
+
+发送邮件:
+django邮件发送配置
+服务端：开启smtp协议支持
+客户端：配置setting文件
+
+EMAIL_HOST = "smtp.163.com"
+EMAIL_HOST_USER = "ABC@163.com"
+EMAIL_HOST_PASSWORD = "ABC"
+EMAIL_USE_TLS = False
+
+服务端开启smtp、登录163邮箱，查看邮箱的服务端地址。
+测试使用
+python_path ./manage.py shell
+
+from django.core.mail import send_mail
+
+send_mail('DevOPS Mail', 'Here is the message.', 'renaizhu@163.com', ['iaskjob@163.com'], fail_silently=False)
+返回值为1
+
+util/tools.py 封装邮件发送功能
+
+from django.core.mail import send_mail
+import time
+
+class sendmail():
+    def __init__(self, receive_addr, sub_info, content_info):
+        sub_data = time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime())
+        self.receive_addr = receive_addr
+        self.sub_info = sub_info + sub_data
+        self.content_info = content_info
+
+    def send(self):
+        try:
+            send_mail(
+                subject = self.sub_info,
+                message = self.content_info,
+                from_email = 'renaizhu@163.com',
+                fail_silently = False,
+            )
+            return True
+        except Exception as e:
+            print e
+            return False
+
+from scanhosts.util.tools import sendmail
+sendm = sendmail(receive_-addr=['iaskjob@163.com'], sub_info="OP DEV", content_info='test')
+sendm.send()
+
+后台服务
+models、urls、视图层
+自动化扫描发现、model对数据库的操作。
+
+settings.py的多个环境配置
+manage.py
+
+if __name__ == '__main__':
+    if len(sys.argv) > 3:
+        run_args = sys.argv[2]
+        if not run_args.startswith('--settings'):
+            os.environ.setdefault("DJANGO_SETTINGS_MODULE", "admin.settings.settings")
+    else:
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "admin.settings.settings")
+
+
+setting.py 中配置项目加载应用
+sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
+sys.path.insert(0, os.path.join(BASE_DIR, "extra_apps"))
+print 'sys.path ......', sys.path
+
+模块 资产信息展示表 detail ConnectionInfo、NetConnectionInfo、PhysicalServerInfo、VirtualServerInfo、OtherMachineInfo、NetWorkInfo
+资产信息探测表 scanhosts HostLoginfo
+
+资产管理是自动化运维平台的构建基础
+
+资产 - > 依赖资产(服务部署、监控系统、自动化任务执行)
+技术实现
+资产信息的手工录入（工作量大）
+客户端主动上报（需要大量的开发人员、不同的平台的定制）
+服务端的扫描发现（探测通用的协议，调用对应的接口协议进行扫描和发现）
+
+优势
+整理实现方便、高效
+后期维护方便
+
+劣势
+不符合标准的服务（代码庞大，性能低下）
+
+抽象与约定
+内网主机类型(centos6-7、ubuntu12、14)
+系统内部开通ssh服务端口为Linux服务器
+linux系统开放ssh端口范围(22、20022、202)
+安全规则(开放允许探测协议和登录的限制)
+网络设备都开通了snmp服务，且community都已经统一
+
+虚拟机不再运行容器等虚拟资产
+网络设备（cisco系列）
+
+探测流程
+存活探测 - > 获取存活的IP列表
+主机探测 - > 获取系统信息(SN、版本、MAC) 利用ssh 
+那些是服务器、那些是网络设备、登录服务器获取信息。
+主机关系探测 —> 识别宿主机与虚机的关系
+网络设备的探测 -> 探测网络设备的信息(SN、设备名等)
+其他设备(人工确认)
+
+存活探测：
+探测协议（icmp 无连接 网络探测、网络质量(tracert、traceroute) \tcp 有连接 应用服务(更加稳定)）
+
+探测模块和工具
+nmap-是一款用于网络发现和安全审计的网络安全工具，它是自由软件
+
+pip install python-nmap==0.6.1
+
+yum install nmap
+-n 不对ip反解析
+-sP 发送icmp echo形式，比ping命令的效率高，只有一个数据包。
+-PE 探测主机端口
+
+nmap -n -sP -PE 192.168.1.0/24
+临时对liunx主机禁ping
+
+
+import nmap
+nm = nmap.PortScanner()
+nm.scan(hosts="192.168.1.0/24", arguments="-n -sP -PE")
+开始执行
+获取存活的主机列表
+nm.all_hosts()
+
+ssh端口存活扫描
+判断主机列表是否属于Linux服务器
+telnet命令
+telnetlib模块
+
+import telnetlib
+telnetlib.Telnet(host='192.168.1.101', port='22', timeout=4)
+tm.read_until("\n", timeout=5)
+
+import re
+re.search('ssh',tm.read_until("\n", timeout=5) )
+
+存活的设备ip列表（live_ip.list）
+Linux服务主机的IP列表(liunx_ip.list)
+非Linux服务主机的IP列表(nonliunux.list)
+
+主机存活探测-存活主机ip列表-> ssh端口探测-(非linux主机列表|可ssh登录主机列表)->
+ssh 登录探测-(SSH Key登录列表|SSH用户名登录列表)-> 主机信息获取-->需要获取的主机信息
+
+主机登录探测
+使用密码登录
+ssh -l test 192.168.1.101 -p 22
+
+确认 /etc/ssh/sshd_config
+RSAAuthentication yes
+PubkeyAuthentication yes
+
+使用密钥登录
+ssh -i /tmp/id_rsa -l test 192.168.1.101 -p 22
+
+Python中的ssh登录模块
+pexpect用来通过启动子程序，使用正则表达式对程序输出做出特定的响应，
+以此实现与其自动交互的Python模块(文件的拷贝、ftp的登录)
+
+paramiko基于Python实现的SSH远程安全连接，用于SSH远程执行命令、
+文件传输等功能的ssh客户端模块。
+
+pexpect 核心类、函数
+run() 直接返回结果和状态
+spawn() 启动子进程运行 -> 读取缓冲区 -> 
+(匹配成功(send发送指令)|匹配不成功(超时退出)|打印缓冲区的结果)
+
+pip install pexpect
+4.2.1
+
+import pexpect
+pexpect.run("ls /tmp")
+命令执行状态
+pexpect.run("ls /tmp", withexitstatus=1)
+
+spawn
+import pexpect
+chk = pexpect.spawn("ls -l /tmp/")
+chk = pexpect.spawn('ls', ["-l", "/tmp/"])
+
+ssh_k = pexpect.spawn("ssh root@10.1.3.89 -p22")
+ssh_k.expect("passwd")
+
+ssh_k.expect('[p,P]assword:')
+
+超时匹配
+ssh_k.except(pexpect.TIMEOUT)
+
+匹配多个结果,返回结果是匹配的索引值
+ssh_k.expect([pexpect.TIMEOUT, pexpect.EOF, "password"])
+
+缓冲区内容匹配：正则匹配、pexpect.EOF、 pexpect.TIMEOUT
+pexpect向子程序发送指令
+send()、sendline()多加一个回车符、sendcontrol(char) 发送控制符
+
+pexpect 依赖终端命令的方式、不同的ssh登录环境兼容较差
+
+pip install paramiko
+
+import paramiko
+jssh = paramiko.SSHClient()
+paramiko.Transport()
+
+jssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+jssh.connect("192.168.1.101", '22', 'test', '123456')
+ 
+密钥的加载
+key = paramiko.RSAKey.from_private_key_file('/tmp/id_rsa')
+jssh.connect('192.168.1.101','22', 'test', pkey=Key登录列表)
+stdin, stdout, stderr = jssh.exec_command("ls /tmp")
+stdout.read()
+
+pip install PyYAML
+myconf = yaml。load(file('/a.yaml'))
+type(myconf)
+
+
+main.py -> snmp_begin->(主机扫描、端口存活扫描、SSH登录探测扫描系统信息收集、扫描列表(邮件、打印、日志))
+
+
+
+snmpwalk -v 2c -c public 192.168.1.2 iso.3.6.(oid值)
+pip install pysnmp
+
+from pysnmp.entity.rfc3413.oneliner import cmdgen
+cg = cmdgen.CommandGenerator()
+cg.getCmd(
+    cmdgen.CommunityData('snmpt', 'public', 0),
+    cmdgen.UdpTransportTarget(('192.168.1.108', 161)),
+    '1.3.6.1.2.1.1.1.0'(官方网站查询值)
+)
+
+snmpwalk -v 2c -c public 127.0.0.1
+
+
+API 与 SDK 的区别：
+api是单一
+sdk是对api的封装，对客户端不必关系api具体的实现。
+
+pyvmomi==6.5.0.2017.5.post1
+
+'''
+自己的学习小方法： 对着源代码敲自己的代码，边看笔记。
+'''

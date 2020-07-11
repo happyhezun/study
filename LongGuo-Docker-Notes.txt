@@ -1,0 +1,61 @@
+容器是基于内核的
+namespace、cgroup 资源划分独立的组，解决资源争用的冲突问题，直接在核心cpu上运行指令
+
+容器=cgroup+namespace+联合文件系统+容器引擎(libcontainer)
+
+镜像的生命周期
+
+去镜像市场下载镜像
+www.daocloud.io
+docker pull daocloud.io/library/nginx:1.10.1
+
+镜像的标签
+docker tag test:0.1 test:0.2
+
+查看镜像的
+docker inspect 16666ff3a57f(镜像id)
+
+启动一个容器
+docker run -dit -P 16666ff3a57f(镜像id)
+
+镜像的导出
+docker save -o 16666ff3a57f.tar 16666ff3a57f
+
+镜像的导入：
+docker load < 16666ff3a57f.tar
+
+创建镜像
+docker commit  -m "ADD test.txt" -a "xiaoluo" 16666ff3a57f(容器id)
+
+对镜像的修改都使用Dockerfile方式提交、方便对镜像生命周期的管理
+
+进入容器
+docker -it 16666ff3a57f(容器id) /bin/bash
+
+停止容器
+docker stop 16666ff3a57f(容器id)
+
+删除容器
+docker rm 16666ff3a57f(容器id)
+
+启动一个容器
+docker create 16666ff3a57f(镜像id)
+
+启动一个容器
+docker run -d nginx
+
+容器随机映射端口
+docker run -d --name web -P nginx
+
+容器指定映射端口
+docker run -d --name web -p 80:8080 nginx
+
+容器必须要有一个进程在前台运行才不会退出，比如写 top、tail -f 文件、或者写一个while循环
+
+同台主机上的docker可以互相访问，所有docker容器的eth0网卡通过docker0虚拟网桥连接
+容器可以访问外部网络,MASQUERADE操作伪装成docker主机的网卡出外网
+iptables -L -t nat -n
+容器的端口映射是iptable做的DNAT操作
+iptable -L -n -t nat
+
+容器通信 --link
